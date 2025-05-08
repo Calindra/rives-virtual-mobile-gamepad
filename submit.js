@@ -193,10 +193,19 @@ async function connectWalletClient() {
 }
 
 async function getEntropy() {
-    const walletClient = await connectWalletClient();
-    const [address] = await walletClient.requestAddresses();
-    const entropy = await generateEntropy(address, contestInfo.id);
-    return entropy;
+    try {
+        console.log('>>>>>>>>>>>>>>> chamando getEntropy.... vai abrir o modal -  banana');
+        const walletClient = await connectWalletClient();
+        const [address] = await walletClient.requestAddresses();
+        if (!walletClient || !address) {
+            return '';
+        }
+        const entropy = await generateEntropy(address, contestInfo.id);
+        return entropy;
+    } catch (error) {
+        console.warn('Unable to generate Entropy');
+        return '';
+    }
 }
 
 async function generateEntropy(userAddress, ruleId) {
